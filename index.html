@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Welcome</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+  <link rel="stylesheet" href="./css/main.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/app.js"></script>
+
+</head>
+
+<body style="background-color:#FEF9DC" >
+
+<div id="app">
+
+  <div class="ui secondary  menu" style="background-color:#804000;">
+    <a href="#" style="padding-left:3%; padding-top:6px;"><h1 style="color:white">PACEPETS</h1></a>
+
+    <div class="ui pointing dropdown link item" style="margin-left:9%">
+      <span class="text" style="color:white;font-size:15px"><b>Kategori</b></span>
+      <i class="dropdown icon" style="color:white;"></i>
+      <div class="menu">
+        <div class="header">Pets</div>
+        <div class="item">
+          <i class="dropdown icon"></i>
+          <span class="text">Anjing</span>
+          <div class="menu">
+            <div class="header">Pilihan</div>
+            <a href="test" class="item">Aksesoris</a>
+            <a href="test" class="item">Mainan</a>
+            <a href="test" class="item">Makanan</a>
+            <a href="test" class="item">Obat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <!-- <div class="ui icon input">
+        <input type="text" placeholder="Cari..." style="width:550px;">
+        <i class="search link icon"></i>
+      </div> -->
+      <div class="ui search">
+        <div class="ui icon input">
+          <input id="input" class="prompt" type="text" v-model="search" autocomplete="on" placeholder="cari apa ya..." style="width:550px;">
+          <a @click="searchItem"><i class="search icon"></i></a>
+        </div>
+        <div class="results"></div>
+      </div>
+    </div>
+
+    <div class="right menu">
+      <a v-if="token.id!==''" id="cart" class="ui item" style="color:white;"><i class="big shop icon"></i></a>
+      <div class="ui custom popup cart top left transition hidden">
+        <table class="ui brown table">
+          <thead>
+            <tr>
+            <th>Barang</th>
+            <th>Jumlah</th>
+            <th>Harga</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(row,index) in rows">
+              <td>{{row.name}}</td>
+              <td>
+                <div class="ui small icon input">
+                  <input type="text" v-model="row.quantity"><br>
+                  <a href="#"><i class="angle up icon"></i></a>
+                  <a href="#"><i class="angle up down icon"></i></a>
+                </div>
+              </td>
+              <td>{{row.quantity*row.price}}</td>
+              <td></a> <a class="ui button" style="background-color:white" @click="removeRow(index,row.price)"><i class="remove icon"></i></a></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="ui animated fade button inverted green" tabindex="0" style="width:100%;">
+          <div class="visible content">Bayar</div>
+          <div class="hidden content">
+            Rp.{{calTotal}}
+          </div>
+        </div>
+      </div>
+
+      <a v-if="token.id!==''"id="login" class="ui item" style="color:white;font-size:15px"><b>Profile</b></a>
+      <div class="ui custom popup login top left transition hidden">
+        <form class="ui form" style="width:250px">
+        <div class="field">
+          <label>Username</label>
+          <input type="text" v-model="username" placeholder="Username">
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="text" v-model="password" placeholder="Passowrd">
+        </div>
+        <div class="field">
+          <div class="ui checkbox">
+            <input type="checkbox" tabindex="0" class="hidden" checked>
+            <label>Ingat saya</label>
+          </div>
+          <a href="#" style="margin-left:50px">Lupa Password?</a>
+        </div>
+        <button class="ui brown button" type="button" style="width:100%;" @click="login">Login</button>
+      </form>
+      </div>
+
+
+
+      <a v-if="token.id===''"id="login" class="ui item" style="color:white;font-size:15px"><b>Login</b></a>
+      <div class="ui custom popup login top left transition hidden">
+        <form class="ui form" style="width:250px">
+        <div class="field">
+          <label>Username</label>
+          <input type="text" v-model="username" placeholder="Username">
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="text" v-model="password" placeholder="Passowrd">
+        </div>
+        <div class="field">
+          <div class="ui checkbox">
+            <input type="checkbox" tabindex="0" class="hidden" checked>
+            <label>Ingat saya</label>
+          </div>
+          <a href="#" style="margin-left:50px">Lupa Password?</a>
+        </div>
+        <button class="ui brown button" type="button" style="width:100%;" @click="login">Login</button>
+      </form>
+      </div>
+      <a v-if="token.id===''"class="ui item">
+          <button id="daftar" class="ui inverted button"><b>Daftar</b></button>
+      </a>
+    </div>
+  </div>
+  <div class="ui divider"></div>
+
+  <div class="ui container">
+    <img src="http://www.agromixpet.com.br/imagens/pets.png" alt="banner" style="margin-left:10%">
+  </div>
+  <div class="ui divider"></div>
+  <div class="ui items" style="padding-top: 2%; margin-left:5%;">
+    <h3 class="ui header">Produk</h3>
+    <div class="item">
+      <div class="ui special cards">
+        <div class="card" v-for="(item,index) in items">
+          <div class="blurring dimmable image">
+            <div class="ui dimmer">
+              <div class="content">
+<!--  v-if="token.id!==''"-->
+                <div v-if="token.id!==''" class="center">
+                  <div class="ui custom popup buy top left transition hidden">
+                    <div class="ui success  message">
+                      <i class="close icon negative"></i>
+                      <div class="header">
+                        Barang berhasil ditambahkan.
+                      </div>
+                      <p></p>
+                    </div>
+                  </div>
+                  <button class="ui inverted green button buy" type="button" v-on:click="addRow(item._id)">Beli</button>
+                </div>
+              </div>
+            </div>
+            <img src="http://www.thepetsuperstore.co.uk/cw3/assets/product_expanded/4115621792_65dd5777c3_o[1].jpg">
+          </div>
+          <div class="content">
+            <a class="header">{{item.name}}</a>
+            <div class="meta">
+              <span>{{item.price}}</span>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="ui divider"></div>
+
+</div>
+</div>
+
+
+  <script src="./js/main.js"></script>
+  <script src="./js/app.js"></script>
+
+  <script type="text/javascript">
+
+</script>
+
+</body>
+
+</html>
